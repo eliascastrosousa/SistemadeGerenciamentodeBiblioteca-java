@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name = "livros")
 @Entity(name = "Livro")
 @EqualsAndHashCode(of = "id")
@@ -36,9 +37,6 @@ public class Livro {
         if (dados.autor() != null){
             this.autor = dados.autor();
         }
-        if (dados.isbn() != null){
-            this.isbn = dados.isbn();
-        }
         if (dados.genero() != null){
             this.genero = dados.genero();
         }
@@ -48,6 +46,8 @@ public class Livro {
         disponivel = false;
     }
 
-
+    public void desmarcarEmprestimo(){
+        disponivel = true;
+    }
 
 }

@@ -1,9 +1,11 @@
 package dev.eliascastro.sgb.controller;
 
 import dev.eliascastro.sgb.model.livro.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +20,14 @@ public class LivroController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody DadosCadastroLivro dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroLivro dados){
         var livro = new Livro(dados);
         repository.save(livro);
         return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosDetalhamentoLivro>> listar(Pageable paginacao) {
+    public ResponseEntity<Page<DadosDetalhamentoLivro>> listar(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao) {
         var page = repository.findAllByDisponivelTrue(paginacao).map(DadosDetalhamentoLivro::new);
         return ResponseEntity.ok(page);
     }
@@ -38,7 +40,7 @@ public class LivroController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizar(@RequestBody DadosAtualizacaoLivro dados){
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoLivro dados){
         var livro = repository.getReferenceById(dados.id());
         livro.atualizar(dados);
         return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));

@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface LivroRepository extends JpaRepository<Livro, Long> {
     Page<Livro> findAllByDisponivelTrue(Pageable paginacao);
+
+    boolean existsByIdAndDisponivelTrue(Long aLong);
 }

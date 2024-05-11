@@ -25,6 +25,7 @@ public class Aluno {
     @Embedded
     private Endereco endereco;
     private boolean ativo;
+    private Integer limiteLivros;
 
     public Aluno(DadosCadastroAluno dados) {
         this.nome = dados.nome();
@@ -33,17 +34,12 @@ public class Aluno {
         this.telefone = dados.telefone();
         this.endereco = new Endereco(dados.endereco());
         this.ativo = true;
+        this.limiteLivros = 3;
     }
 
     public void atualizarAluno(DadosAtualizacaoAluno dados){
         if (dados.nome() != null) {
             this.nome = dados.nome();
-        }
-        if (dados.email() != null) {
-            this.email = dados.email();
-        }
-        if (dados.cpf() != null) {
-            this.email = dados.email();
         }
         if (dados.telefone() != null) {
             this.telefone = dados.telefone();
@@ -56,4 +52,12 @@ public class Aluno {
     public void deletar() {
         ativo = false;
     }
+
+    public void decrescentaAoLimiteEmprestimo() {
+        this.limiteLivros--;
+    }
+    public void acrescentaAoLimiteEmprestimo() {
+        this.limiteLivros++;
+    }
+
 }

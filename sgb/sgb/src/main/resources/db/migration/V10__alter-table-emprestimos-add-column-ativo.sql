@@ -1,0 +1,1 @@
+update emprestimos set ativo = 1;
