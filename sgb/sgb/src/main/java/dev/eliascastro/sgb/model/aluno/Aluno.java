@@ -26,6 +26,7 @@ public class Aluno {
     private Endereco endereco;
     private boolean ativo;
     private Integer limiteLivros;
+    private Double multa;
 
     public Aluno(DadosCadastroAluno dados) {
         this.nome = dados.nome();
@@ -35,6 +36,7 @@ public class Aluno {
         this.endereco = new Endereco(dados.endereco());
         this.ativo = true;
         this.limiteLivros = 3;
+        this.multa = 0.0;
     }
 
     public void atualizarAluno(DadosAtualizacaoAluno dados){
@@ -48,6 +50,19 @@ public class Aluno {
             this.endereco.atualizar(dados.endereco());
         }
     }
+
+    public void adicionarMulta(double multa){
+        this.multa += multa;
+    }
+
+    public void zerarMulta(double pagamento){
+        this.multa -= pagamento;
+        if (multa == 0.0){
+            acrescentaAoLimiteEmprestimo();
+        }
+    }
+
+
 
     public void deletar() {
         ativo = false;
