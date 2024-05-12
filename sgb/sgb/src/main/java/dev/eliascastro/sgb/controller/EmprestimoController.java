@@ -29,15 +29,15 @@ public class EmprestimoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosDetalhamentoEmprestimoNomes>> listarEmprestimos(@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-        var page = emprestimoRepository.findAllByAtivoTrue(paginacao).map(DadosDetalhamentoEmprestimoNomes::new);
+    public ResponseEntity<Page<DadosDetalhamentoEmprestimo>> listarEmprestimos(@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
+        var page = emprestimoRepository.findAllByAtivoTrue(paginacao).map(DadosDetalhamentoEmprestimo::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity detalhes(@PathVariable Long id){
         var emprestimo = emprestimoRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DadosDetalhamentoEmprestimoNomes(emprestimo));
+        return ResponseEntity.ok(new DadosDetalhamentoEmprestimo(emprestimo));
     }
 
     @DeleteMapping("/{id}")
