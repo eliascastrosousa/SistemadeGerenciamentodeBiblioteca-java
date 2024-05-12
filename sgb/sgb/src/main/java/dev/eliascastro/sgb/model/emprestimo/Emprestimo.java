@@ -31,14 +31,24 @@ public class Emprestimo {
 
     private boolean ativo = true;
 
+    private Double multa;
+
     public Emprestimo(DadosCadastroEmprestimoLivro dados) {
 
+    }
+
+    public Emprestimo(Livro livro, Aluno aluno, LocalDate dataEmprestimo, LocalDate dataDevolucao){
+        this.livro = livro;
+        this.aluno = aluno;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataDevolucao = dataDevolucao;
+        multa = 0.0;
     }
 
     public Emprestimo( Livro livro, Aluno aluno) {
         this.livro = livro;
         this.aluno = aluno;
-
+        multa = 0.0;
     }
 
     public void arquivar() {

@@ -29,23 +29,15 @@ public class EmprestimoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosDetalhamentoEmprestimo>> listarEmprestimos(@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-        var page = emprestimoRepository.findAllByAtivoTrue(paginacao).map(DadosDetalhamentoEmprestimo::new);
+    public ResponseEntity<Page<DadosDetalhamentoEmprestimoNomes>> listarEmprestimos(@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
+        var page = emprestimoRepository.findAllByAtivoTrue(paginacao).map(DadosDetalhamentoEmprestimoNomes::new);
         return ResponseEntity.ok(page);
     }
-
-//    @GetMapping("/detalhamento")
-//    public ResponseEntity<Page<DadosDetalhamentoEmprestimo>> listarEmprestimosComDetalhes(@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao){
-//        var page = emprestimoRepository.findAllByAtivoTrueComDetalhes(paginacao).map(DadosDetalhamentoEmprestimo::new);
-//        return ResponseEntity.ok(page);
-//    }
 
     @GetMapping("/{id}")
     public ResponseEntity detalhes(@PathVariable Long id){
         var emprestimo = emprestimoRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DadosDetalhamentoEmprestimo(emprestimo));
-        //criar uma validação para apenas mostrar o item se ele estiver ativo,
-        // caso contrario devolver uma exception "Dados de emprestimo não disponivel."
+        return ResponseEntity.ok(new DadosDetalhamentoEmprestimoNomes(emprestimo));
     }
 
     @DeleteMapping("/{id}")

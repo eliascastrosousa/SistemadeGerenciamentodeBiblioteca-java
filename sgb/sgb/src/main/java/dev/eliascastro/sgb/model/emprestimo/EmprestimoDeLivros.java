@@ -4,7 +4,9 @@ import dev.eliascastro.sgb.ValidacaoException;
 import dev.eliascastro.sgb.model.aluno.AlunoRepository;
 import dev.eliascastro.sgb.model.emprestimo.validacoes.emprestimos.ValidacaoEmprestimoLivro;
 import dev.eliascastro.sgb.model.livro.LivroRepository;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,10 +51,25 @@ public class EmprestimoDeLivros {
         var emprestimo = emprestimoRepository.findById(id);
         var livro = livroRepository.findById(emprestimo.get().getLivro().getId());
         var aluno = alunoRepository.findById(emprestimo.get().getAluno().getId());
-        livro.get().desmarcarEmprestimo();
-        aluno.get().acrescentaAoLimiteEmprestimo();
-        emprestimo.get().arquivar();
+
+        var dataDevolucao = emprestimo.get().getDataDevolucao();
+        var dias = LocalDate.now().compareTo(dataDevolucao);
+
+        if (dias > 0) {
+            var multa = 0.50 * dias;
+            aluno.get().adicionarMulta(multa);
+            emprestimo.get().setMulta(multa);
+            livro.get().desmarcarEmprestimo();
+            emprestimo.get().arquivar();
+        }else {
+            livro.get().desmarcarEmprestimo();
+            emprestimo.get().arquivar();
+            aluno.get().acrescentaAoLimiteEmprestimo();
+        }
+
+
 
     }
+
 
 }
