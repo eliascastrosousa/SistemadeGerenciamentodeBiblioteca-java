@@ -38,10 +38,10 @@ public class LivroController {
         return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoLivro dados){
-        var livro = repository.getReferenceById(dados.id());
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoLivro dados){
+        var livro = repository.getReferenceById(id);
         livro.atualizar(dados);
         return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
     }

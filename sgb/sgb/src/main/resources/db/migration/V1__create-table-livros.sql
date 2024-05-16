@@ -7,4 +7,5 @@ create table livros(
     disponivel tinyint,
 
     primary key(id)
-)
+);
+

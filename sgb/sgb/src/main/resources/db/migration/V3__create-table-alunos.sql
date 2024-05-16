@@ -11,6 +11,11 @@ create table alunos(
     numero varchar(20),
     uf char(2) not null,
     cidade varchar(100) not null,
+    ativo tinyint,
+    limite_livros integer,
+    multa float,
 
     primary key(id)
-)
+);
+
+

@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/alunos")
@@ -20,10 +21,13 @@ public class AlunoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroAluno dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
         var aluno = new Aluno(dados);
         alunoRepository.save(aluno);
-        return ResponseEntity.ok(new DadosDetalhamentoAluno(aluno));
+
+        var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoAluno(aluno));
+
     }
 
     @GetMapping
@@ -32,10 +36,10 @@ public class AlunoController {
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoAluno dados){
-        var aluno = alunoRepository.getReferenceById(dados.id());
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoAluno dados){
+        var aluno = alunoRepository.getReferenceById(id);
         aluno.atualizarAluno(dados);
         return ResponseEntity.ok(new DadosDetalhamentoAluno(aluno));
     }

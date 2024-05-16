@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Pattern;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DadosAtualizacaoAluno(
-        @NotBlank
-        Long id,
+
+
 
         String nome,
 
