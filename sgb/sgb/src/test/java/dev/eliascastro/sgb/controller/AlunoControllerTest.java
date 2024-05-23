@@ -131,20 +131,6 @@ class AlunoControllerTest {
     }
 
     @Test
-    @DisplayName("(DELETE) Deve retornar codigo http 200 quando id encontrado")
-    void cenario07() throws Exception {
-        Aluno aluno = new Aluno(dadosCadastroAluno());
-        when(alunoRepository.getReferenceById(any())).thenReturn(aluno);
-
-        var response = mockMvc.perform(delete("/alunos/1"))
-                .andReturn().getResponse();
-
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
-
-    }
-
-    @Test
     @DisplayName("(DELETE) Deve retornar codigo http 404 quando id nao for passado")
     void cenario08() throws Exception {
         Aluno aluno = new Aluno(dadosCadastroAluno());

@@ -1,5 +1,6 @@
 package dev.eliascastro.sgb.controller;
 
+import dev.eliascastro.sgb.model.aluno.DadosDetalhamentoAluno;
 import dev.eliascastro.sgb.model.livro.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
 @RestController
@@ -20,10 +22,11 @@ public class LivroController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroLivro dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroLivro dados, UriComponentsBuilder uriBuilder){
         var livro = new Livro(dados);
         repository.save(livro);
-        return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
+        var uri = uriBuilder.path("/livros/{id}").buildAndExpand(livro.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoLivro(livro));
     }
 
     @GetMapping
@@ -47,6 +50,7 @@ public class LivroController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity excluir(@PathVariable Long id){
         var livro = repository.getReferenceById(id);
         repository.delete(livro);

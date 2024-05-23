@@ -62,11 +62,10 @@ public class Aluno {
         }
     }
 
-
-
-    public void deletar() {
-        ativo = false;
+    public void desativarAluno() {
+        this.ativo = false;
     }
+
 
     public void decrescentaAoLimiteEmprestimo() {
         this.limiteLivros--;

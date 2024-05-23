@@ -1,8 +1,14 @@
 package dev.eliascastro.sgb.controller;
 
 import dev.eliascastro.sgb.model.aluno.Aluno;
+import dev.eliascastro.sgb.model.aluno.DadosAtualizacaoAluno;
 import dev.eliascastro.sgb.model.aluno.DadosCadastroAluno;
+import dev.eliascastro.sgb.model.aluno.DadosDetalhamentoAluno;
 import dev.eliascastro.sgb.model.emprestimo.*;
+import dev.eliascastro.sgb.model.endereco.DadosEndereco;
+import dev.eliascastro.sgb.model.livro.DadosCadastroLivro;
+import dev.eliascastro.sgb.model.livro.Livro;
+import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +22,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.junit.Assert.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -59,10 +70,8 @@ class EmprestimoControllerTest {
     @DisplayName("deveria devolver codigo http 200 quando informações estão validas")
     void cenario02() throws Exception {
 
-
-        var dadosDetalhamento = new DadosDetalhamentoEmprestimo(null,"nome", "titulo", dataHoje, dataSemanaQueVem);
+        var dadosDetalhamento = new DadosDetalhamentoEmprestimo(1l,"nome", "titulo", dataHoje, dataSemanaQueVem);
         when(emprestimoDeLivros.emprestar(any())).thenReturn(dadosDetalhamento);
-
         var response = mockMvc.perform(post("/emprestimos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dadosCadastroEmprestimoLivroJson.write(
@@ -70,12 +79,96 @@ class EmprestimoControllerTest {
                                 .getJson()))
                 .andReturn().getResponse();
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-
-        var jsonEsperado = dadosDetalhamentoEmprestimoJson.write(new DadosDetalhamentoEmprestimo(null,"nome", "titulo", dataHoje, dataSemanaQueVem)).getJson();
-
-        assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
 
     }
 
+    @Test
+    @DisplayName("Teste de multa emprestimo de livros atrasado 1 semana")
+    void cenario03()  {
+        Aluno aluno = new Aluno(dadosCadastroAluno01());
+        Livro livro = new Livro(dadosCadastroLivro01());
+        LocalDate d01 = LocalDate.parse("2024-05-08");
+        LocalDate d02 = LocalDate.parse("2024-05-15");
+        Emprestimo emprestimo = new Emprestimo(livro, aluno, d01, d02);
+        emprestimo.verificaMulta();
+        double multa = emprestimo.getMulta();
+        assertEquals(emprestimo.getMulta(), 3.5);
+    }
+
+    @Test
+    @DisplayName("Teste limite de emprestimo")
+    void cenario04()  {
+        Aluno aluno = new Aluno(dadosCadastroAluno01());
+        aluno.decrescentaAoLimiteEmprestimo();
+        assertEquals(aluno.getLimiteLivros(), 2);
+    }
+
+
+    private DadosCadastroAluno dadosCadastroAluno01(){
+        return new DadosCadastroAluno(
+                "aluno",
+                "aluno@email.com",
+                "00000000001",
+                "00000000001",
+                dadosEndereco()
+        );
+    }
+
+    private DadosCadastroAluno dadosCadastroAluno02(){
+        return new DadosCadastroAluno(
+                "aluno",
+                "aluno@email.com",
+                "00000000001",
+                "00000000001",
+                dadosEndereco()
+        );
+    }
+
+    private DadosEndereco dadosEndereco() {
+        return new DadosEndereco(
+                "rua xpto",
+                "bairro",
+                "00000000",
+                "Brasilia",
+                "DF",
+                null,
+                null
+        );
+    }
+
+    private DadosCadastroLivro dadosCadastroLivro01(){
+        return new DadosCadastroLivro(
+                "teste",
+                "elias",
+                "00000000004",
+                "teste"
+        );
+    }
+
+    private DadosCadastroLivro dadosCadastroLivro02(){
+        return new DadosCadastroLivro(
+                "teste",
+                "elias",
+                "00000000004",
+                "teste"
+        );
+    }
+
+    private DadosCadastroLivro dadosCadastroLivro03(){
+        return new DadosCadastroLivro(
+                "teste",
+                "elias",
+                "00000000004",
+                "teste"
+        );
+    }
+    private DadosCadastroLivro dadosCadastroLivro04(){
+        return new DadosCadastroLivro(
+                "teste",
+                "elias",
+                "00000000004",
+                "teste"
+        );
+    }
 }

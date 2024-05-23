@@ -67,7 +67,7 @@ class LivroControllerTest {
 
         var jsonEsperado = dadosDetalhamentoLivroJacksonTester.write(dadosDetalhamentoLivro()).getJson();
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
     }
 

@@ -51,9 +51,15 @@ public class AlunoController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity excluir(@PathVariable Long id){
-        var aluno = alunoRepository.getReferenceById(id);
-        aluno.deletar();
-        return ResponseEntity.noContent().build();
+        var alunoExists = alunoRepository.existsByIdAndAtivoTrue(id);
+        if (alunoExists){
+            var aluno = alunoRepository.getReferenceById(id);
+            aluno.desativarAluno();
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+
     }
 }

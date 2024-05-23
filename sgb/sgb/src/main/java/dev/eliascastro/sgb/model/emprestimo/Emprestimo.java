@@ -36,7 +36,6 @@ public class Emprestimo {
     public Emprestimo(DadosCadastroEmprestimoLivro dados) {
 
     }
-
     public Emprestimo(Livro livro, Aluno aluno, LocalDate dataEmprestimo, LocalDate dataDevolucao){
         this.livro = livro;
         this.aluno = aluno;
@@ -44,11 +43,18 @@ public class Emprestimo {
         this.dataDevolucao = dataDevolucao;
         multa = 0.0;
     }
-
     public Emprestimo( Livro livro, Aluno aluno) {
         this.livro = livro;
         this.aluno = aluno;
         multa = 0.0;
+    }
+
+    public void verificaMulta() {
+        var dias = LocalDate.now().compareTo(this.dataDevolucao);
+        if (dias > 0) {
+            var multaDaDevolucao = 0.50 * dias;
+            multa += multaDaDevolucao;
+        }
     }
 
     public void arquivar() {
