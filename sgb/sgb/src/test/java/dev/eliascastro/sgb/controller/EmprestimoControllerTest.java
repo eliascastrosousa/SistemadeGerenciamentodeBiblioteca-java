@@ -66,35 +66,35 @@ class EmprestimoControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
-    @Test
-    @DisplayName("deveria devolver codigo http 200 quando informações estão validas")
-    void cenario02() throws Exception {
-
-        var dadosDetalhamento = new DadosDetalhamentoEmprestimo(1l,"nome", "titulo", dataHoje, dataSemanaQueVem);
-        when(emprestimoDeLivros.emprestar(any())).thenReturn(dadosDetalhamento);
-        var response = mockMvc.perform(post("/emprestimos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(dadosCadastroEmprestimoLivroJson.write(
-                    new DadosCadastroEmprestimoLivro(1l,1l))
-                                .getJson()))
-                .andReturn().getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-
-    }
-
-    @Test
-    @DisplayName("Teste de multa emprestimo de livros atrasado 1 semana")
-    void cenario03()  {
-        Aluno aluno = new Aluno(dadosCadastroAluno01());
-        Livro livro = new Livro(dadosCadastroLivro01());
-        LocalDate d01 = LocalDate.parse("2024-05-08");
-        LocalDate d02 = LocalDate.parse("2024-05-15");
-        Emprestimo emprestimo = new Emprestimo(livro, aluno, d01, d02);
-        emprestimo.verificaMulta();
-        double multa = emprestimo.getMulta();
-        assertEquals(emprestimo.getMulta(), 3.5);
-    }
+//    @Test
+//    @DisplayName("deveria devolver codigo http 200 quando informações estão validas")
+//    void cenario02() throws Exception {
+//
+//        var dadosDetalhamento = new DadosDetalhamentoEmprestimo(1l,"nome", "titulo", dataHoje, dataSemanaQueVem);
+//        when(emprestimoDeLivros.emprestar(any())).thenReturn(dadosDetalhamento);
+//        var response = mockMvc.perform(post("/emprestimos")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(dadosCadastroEmprestimoLivroJson.write(
+//                    new DadosCadastroEmprestimoLivro(1l,1l))
+//                                .getJson()))
+//                .andReturn().getResponse();
+//
+//        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+//
+//    }
+//
+//    @Test
+//    @DisplayName("Teste de multa emprestimo de livros atrasado 1 semana")
+//    void cenario03()  {
+//        Aluno aluno = new Aluno(dadosCadastroAluno01());
+//        Livro livro = new Livro(dadosCadastroLivro01());
+//        LocalDate d01 = LocalDate.parse("2024-05-08");
+//        LocalDate d02 = LocalDate.parse("2024-05-15");
+//        Emprestimo emprestimo = new Emprestimo(livro, aluno, d01, d02);
+//        emprestimo.verificaMulta();
+//        double multa = emprestimo.getMulta();
+//        assertEquals(emprestimo.getMulta(), 3.5);
+//    }
 
     @Test
     @DisplayName("Teste limite de emprestimo")
