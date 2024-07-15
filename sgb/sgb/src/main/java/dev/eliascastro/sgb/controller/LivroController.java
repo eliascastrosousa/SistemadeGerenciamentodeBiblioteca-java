@@ -4,6 +4,8 @@ import dev.eliascastro.sgb.model.aluno.DadosDetalhamentoAluno;
 import dev.eliascastro.sgb.model.livro.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,6 +22,7 @@ public class LivroController {
     @Autowired
     private LivroRepository repository;
 
+    @CacheEvict(value = "listarLivros", allEntries = true)
     @PostMapping
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroLivro dados, UriComponentsBuilder uriBuilder){
@@ -30,7 +33,7 @@ public class LivroController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosDetalhamentoLivro>> listar(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao) {
+    public ResponseEntity<Page<DadosDetalhamentoLivro>> listar(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao ) {
         var page = repository.findAllByDisponivelTrue(paginacao).map(DadosDetalhamentoLivro::new);
         return ResponseEntity.ok(page);
     }
@@ -41,6 +44,7 @@ public class LivroController {
         return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
     }
 
+    @CacheEvict(value = "listarLivros", allEntries = true)
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoLivro dados){
@@ -49,6 +53,7 @@ public class LivroController {
         return ResponseEntity.ok(new DadosDetalhamentoLivro(livro));
     }
 
+    @CacheEvict(value = "listarLivros", allEntries = true)
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long id){

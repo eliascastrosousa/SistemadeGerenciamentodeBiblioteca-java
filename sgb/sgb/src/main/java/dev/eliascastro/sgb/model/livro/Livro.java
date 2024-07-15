@@ -2,6 +2,10 @@ package dev.eliascastro.sgb.model.livro;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 @Setter
@@ -28,7 +32,6 @@ public class Livro {
         this.genero = dados.genero();
         this.disponivel = true;
     }
-
 
     public void atualizar(DadosAtualizacaoLivro dados) {
         if (dados.titulo() != null){

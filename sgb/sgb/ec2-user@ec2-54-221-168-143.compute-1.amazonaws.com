@@ -11,18 +11,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
   app:
     image: eliascastrosousa/sgb:latest
     env_file: ./env/app.env
     restart: unless-stopped
 
+
     depends_on:
       mysql:
         condition: service_healthy
-
-  redis:
-    image: redis:7.2.4
-    restart: unless-stopped
 
 volumes:
   mysql-data:

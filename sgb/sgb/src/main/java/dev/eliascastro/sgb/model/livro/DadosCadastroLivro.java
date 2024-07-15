@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DadosCadastroLivro(
         @NotBlank
@@ -13,5 +15,5 @@ public record DadosCadastroLivro(
         @NotBlank
         @Pattern(regexp = "\\d{10,13}")
         String isbn,
-        String genero) {
+        String genero) implements Serializable {
 }
