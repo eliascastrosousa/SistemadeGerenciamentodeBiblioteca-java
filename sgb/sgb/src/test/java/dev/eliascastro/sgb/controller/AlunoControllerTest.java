@@ -1,11 +1,11 @@
 package dev.eliascastro.sgb.controller;
 
-import dev.eliascastro.sgb.model.aluno.*;
-import dev.eliascastro.sgb.model.emprestimo.DadosCadastroEmprestimoLivro;
-import dev.eliascastro.sgb.model.emprestimo.DadosDetalhamentoEmprestimo;
-import dev.eliascastro.sgb.model.emprestimo.EmprestimoDeLivros;
-import dev.eliascastro.sgb.model.endereco.DadosEndereco;
-import dev.eliascastro.sgb.model.livro.Livro;
+import dev.eliascastro.sgb.application.aluno.DadosAtualizacaoAluno;
+import dev.eliascastro.sgb.application.aluno.DadosCadastroAluno;
+import dev.eliascastro.sgb.application.aluno.DadosDetalhamentoAluno;
+import dev.eliascastro.sgb.infra.aluno.Aluno;
+import dev.eliascastro.sgb.infra.aluno.AlunoRepository;
+import dev.eliascastro.sgb.infra.endereco.DadosEndereco;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

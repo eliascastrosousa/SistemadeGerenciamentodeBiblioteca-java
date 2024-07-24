@@ -1,15 +1,13 @@
 package dev.eliascastro.sgb.controller;
 
-import dev.eliascastro.sgb.model.aluno.Aluno;
-import dev.eliascastro.sgb.model.aluno.DadosAtualizacaoAluno;
-import dev.eliascastro.sgb.model.aluno.DadosCadastroAluno;
-import dev.eliascastro.sgb.model.aluno.DadosDetalhamentoAluno;
-import dev.eliascastro.sgb.model.emprestimo.*;
-import dev.eliascastro.sgb.model.endereco.DadosEndereco;
-import dev.eliascastro.sgb.model.livro.DadosCadastroLivro;
-import dev.eliascastro.sgb.model.livro.Livro;
-import org.assertj.core.api.Assert;
-import org.junit.jupiter.api.BeforeEach;
+import dev.eliascastro.sgb.application.emprestimo.DadosCadastroEmprestimoLivro;
+import dev.eliascastro.sgb.application.emprestimo.DadosDetalhamentoEmprestimo;
+import dev.eliascastro.sgb.infra.aluno.Aluno;
+import dev.eliascastro.sgb.application.aluno.DadosCadastroAluno;
+import dev.eliascastro.sgb.infra.emprestimo.EmprestimoDeLivros;
+import dev.eliascastro.sgb.infra.emprestimo.EmprestimoRepository;
+import dev.eliascastro.sgb.infra.endereco.DadosEndereco;
+import dev.eliascastro.sgb.application.livro.DadosCadastroLivro;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +16,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 @SpringBootTest

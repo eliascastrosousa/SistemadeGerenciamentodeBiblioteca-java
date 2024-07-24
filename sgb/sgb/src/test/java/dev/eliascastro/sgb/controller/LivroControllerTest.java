@@ -1,8 +1,12 @@
 package dev.eliascastro.sgb.controller;
 
+import dev.eliascastro.sgb.application.livro.DadosAtualizacaoLivro;
+import dev.eliascastro.sgb.application.livro.DadosCadastroLivro;
+import dev.eliascastro.sgb.application.livro.DadosDetalhamentoLivro;
+import dev.eliascastro.sgb.infra.livro.CategoriaLivro;
+import dev.eliascastro.sgb.infra.livro.Livro;
+import dev.eliascastro.sgb.infra.livro.LivroRepository;
 import dev.eliascastro.sgb.model.aluno.*;
-import dev.eliascastro.sgb.model.endereco.DadosEndereco;
-import dev.eliascastro.sgb.model.livro.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +16,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.web.servlet.function.RequestPredicates.GET;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -76,7 +74,7 @@ class LivroControllerTest {
     void cenario03() throws Exception {
         when(livroRepository.save(any())).thenReturn(new Livro(dadosCadastroLivro()));
         Livro livro = new Livro(dadosCadastroLivro());
-        when(livroRepository.findAllByDisponivelTrue(any())).thenReturn(Page.empty());
+        when(livroRepository.findAllByAtivoTrueAndDisponivelTrue(any())).thenReturn(Page.empty());
 
         var response = mockMvc.perform(get("/livros"))
                 .andReturn().getResponse();
@@ -167,21 +165,21 @@ class LivroControllerTest {
                 "teste",
                 "elias",
                 "00000000004",
-                "teste"
+                CategoriaLivro.Linguas
         );
     }
     private DadosDetalhamentoLivro dadosDetalhamentoLivro(){
         return new DadosDetalhamentoLivro(
                 "teste",
                 "elias",
-                "teste");
+                CategoriaLivro.Linguas);
     }
 
     private DadosAtualizacaoLivro dadosAtualizacaoLivro(){
         return new DadosAtualizacaoLivro(
                 "teste",
                 "elias",
-                "teste"
+                CategoriaLivro.Linguas
                 );
     }
 

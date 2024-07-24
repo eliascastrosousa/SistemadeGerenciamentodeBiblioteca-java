@@ -1,11 +1,12 @@
 create table livros(
-    id bigint not null auto_increment,
+
     titulo varchar(200) not null,
     autor varchar(100) not null,
-    isbn varchar(100) not null,
-    genero varchar(100) not null,
+    isbn varchar(13) not null unique,
+    categoria_livro varchar(100) not null,
     disponivel tinyint,
+    ativo tinyint,
 
-    primary key(id)
+    primary key(isbn)
 );
 
