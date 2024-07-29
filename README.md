@@ -5,25 +5,44 @@ Este projeto é uma API para o gerenciamento interno de uma biblioteca, incluind
 
 ## Requisitos
 
-Ter o docker instalado no computador, 
+Para rodar o projeto com container Docker
+* Ter o docker e docker-compose instalado no computador;
+* Ferramenta de testes de API. ex: Insomnia e Postman;
 
----
+```
+docker compose up
+```
+
+Para rodar direto na maquina
+
+* Ter o Java17 instalado na maquina
+* IDE para compilar e executar o projeto.
+* Ter o MySQL instalado
+* Ferramenta de testes de API. ex: Insomnia e Postman;
+
+Instalar todas as dependencias do Maven
+
+![image](https://github.com/user-attachments/assets/230a8b17-7166-4b91-96e1-ba88ee574eba)
+
+Executar aplicação
+
+![image](https://github.com/user-attachments/assets/493b44e7-70e4-4cdc-ade7-45db765049c3)
+
+
 
 ## Regras de negócio
 
-- **Cadastro de Alunos:**
- Requisitos para registro de alunos como obrigatoriedade de nome completo, email e telefone.
+**Alunos:**
+- Requisitos para registro de alunos como obrigatoriedade de nome completo, email e telefone.
 - Ao gerar o cadastro do aluno, é incluido um limite de livros que podem ser emprestados.
 - Ao atualizar o aluno só podem ser atualizados nome e telefone e endereço.
 - Ao deletar o aluno da base de dados, o aluno é arquivado no sistema desativando seu perfil.
   
-- **Gestão de Inventário:** Controle de estoque de livros disponíveis.
-
-- **Empréstimos:**
-    Regras sobre o tempo de empréstimo de livros e penalidades por atraso como multa.
-    Ao emprestar o livro, automaticamente é decescido um limite de emprestimos do aluno e o livro é alterado para indisponivel na base de dados.
-  Quando o aluno utiliza todo seu limite de emprestimos, fica impossibilitado de realizar novos emprestimos até a devolução de um item.
-  Caso o item seja devolvido depois da data de devolução, é incluido em seu perfil uma multa, que quando chega a um limite de valor, o mesmo fica impedido de realizar novos emprestimos até realizar o pagamento do saldo da conta.
+**Empréstimos:**
+- Regras sobre o tempo de empréstimo de livros e penalidades por atraso como multa.
+- Ao emprestar o livro, automaticamente é decrescido um limite de emprestimos do aluno e o livro é alterado para indisponivel na base de dados.
+- Quando o aluno utiliza todo seu limite de emprestimos, fica impossibilitado de realizar novos emprestimos até a devolução de um item.
+- Caso o item seja devolvido depois da data de devolução, é incluido em seu perfil uma multa, que quando chega a um limite de valor, o mesmo fica impedido de realizar novos emprestimos até realizar o pagamento do saldo da conta.
 
 ---
 
@@ -44,29 +63,42 @@ As tecnologias utilizadas neste projeto incluem:
 
 ---
 
-## Padrões de projeto aplicados
-Nesta seção, você pode descrever os padrões de design utilizados, como:
-- **MVC (Model-View-Controller):** Estrutura utilizada para separar a lógica de negócios, a lógica de apresentação e os dados.
-- **DAO (Data Access Object):** Padrão utilizado para abstrair e encapsular todos os acessos ao banco de dados.
-
-## Arquitetura
-A arquitetura do projeto é baseada em microservices ou monolítica, dependendo da abordagem escolhida. Descreva como os componentes da aplicação estão estruturados e como eles interagem entre si.
-
 ## Paradigmas
 Os paradigmas de programação adotados incluem:
 - **Programação Orientada a Objetos (POO):** Utilizada para organizar o código em torno de objetos e classes.
 - **Desenvolvimento Ágil:** Abordagem utilizada para o desenvolvimento iterativo e incremental do software.
 
 ## Endpoints
-Detalhe os endpoints disponíveis na API, incluindo os métodos HTTP e as rotas associadas, por exemplo:
-- **GET /alunos:** Retorna a lista de alunos.
-- **POST /alunos:** Cria um novo aluno.
+
+Livro
+
 - **GET /livros:** Retorna a lista de livros.
-- **POST /livros:** Adiciona um novo livro.
+- **GET /livros/{isbn}:** Retorna livro especifico.
+- **POST /livros:** Cria um novo livro.
+- **PUT /livros/{isbn}:** Atualiza um livro.
+- **DELETE /livros/{isbn}:** Deleta(inativa) um livro especifico.
 
-## Cobertura de testes
-Descreva a cobertura de testes da aplicação, incluindo testes unitários, de integração e end-to-end. Explique como os testes foram realizados e o nível de cobertura alcançado.
+Aluno
 
----
+- **GET /alunos:** Retorna a lista de alunos.
+- **GET /alunos/{cpf}:** Retorna aluno especifico.
+- **POST /alunos:** Cria um novo aluno.
+- **PUT /alunos/{cpf}:** Atualiza um aluno.
+- **DELETE /alunos/{cpf}:** Deleta(inativa) um aluno especifico.
 
-Essa estrutura proporciona uma visão clara e organizada do seu projeto, facilitando a compreensão para outros desenvolvedores e colaboradores.
+Emprestimos
+
+- **GET /emprestimos:** Retorna a lista de emprestimos.
+- **GET /emprestimos/{id}:** Retorna emprestimo especifico.
+- **POST /emprestimos:** Cria um novo emprestimo.
+- **PUT /emprestimos/{id}:** Atualiza um emprestimo.
+- **DELETE /emprestimos/{id}:** Deleta(inativa) um emprestimo especifico.
+
+Login e Usuarios
+
+- **POST /login:** Verifica credenciais e Retorna o Token de autenticação.
+- **GET /usuarios:** Retorna lista de usuarios.
+- **GET /usuarios/{id}:** Retorna usuario especifico.
+- **POST /usuarios:** Cria um novo usuario.
+- **PUT /usuarios/{id}:** Atualiza um usuario.
+- **DELETE /usuarios/{id}:** Deleta(inativa) um usuario especifico.
