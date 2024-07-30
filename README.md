@@ -63,6 +63,12 @@ As tecnologias utilizadas neste projeto incluem:
 
 ---
 
+## Arquitetura
+
+em construção
+
+---
+
 ## Paradigmas
 Os paradigmas de programação adotados incluem:
 - **Programação Orientada a Objetos (POO):** Utilizada para organizar o código em torno de objetos e classes.
