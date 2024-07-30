@@ -70,6 +70,11 @@ Os paradigmas de programação adotados incluem:
 
 ## Endpoints
 
+Para utilizar o Swagger UI no servidor local, acesse o link:
+```
+  localhost:8080/swagger-ui/index.html
+```
+
 Livro
 
 - **GET /livros:** Retorna a lista de livros.
