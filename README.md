@@ -10,7 +10,7 @@ Para rodar o projeto com container Docker
 * Ferramenta de testes de API. ex: Insomnia e Postman;
 
 ```
-docker compose up
+docker compose up --build
 ```
 
 Para rodar direto na maquina
