@@ -10,6 +10,14 @@ Para rodar o projeto com container Docker
 * Ferramenta de testes de API. ex: Insomnia e Postman;
 
 ```
+gh repo clone eliascastrosousa/SistemadeGerenciamentodeBiblioteca-java
+```
+
+```
+cd SistemadeGerenciamentodeBiblioteca-java/sgb/sgb/
+```
+
+```
 docker compose up --build
 ```
 
