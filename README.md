@@ -1,123 +1,358 @@
-![LinkedIn banner designer marrom estiloso](https://github.com/user-attachments/assets/e2b8f296-570a-4801-8465-a5654496a275)
+📚 Sistema de Gerenciamento de Biblioteca
 
-## Sobre
-Este projeto é uma API para o gerenciamento interno de uma biblioteca, incluindo funcionalidades para CRUD de Alunos, Livros e Empréstimos. O desenvolvimento foi realizado utilizando Java 17 e o framework Spring Boot, oferecendo uma solução moderna e escalável para o gerenciamento de bibliotecas.
+<p align="center">
+  <strong>API REST para gerenciamento de biblioteca desenvolvida com Java e Spring Boot.</strong>
+</p><p align="center">
+  Gerenciamento de livros, alunos, empréstimos e usuários, com autenticação, regras de negócio, persistência em MySQL, cache com Redis e documentação através do Swagger.
+</p>---
 
-## Requisitos
+📌 Sobre o projeto
 
-Para rodar o projeto com container Docker
-* Ter o docker e docker-compose instalado no computador;
-* Ferramenta de testes de API. ex: Insomnia e Postman;
+O Sistema de Gerenciamento de Biblioteca é uma API REST desenvolvida em Java 17 e Spring Boot, criada para centralizar o gerenciamento de uma biblioteca.
 
-```
-gh repo clone eliascastrosousa/SistemadeGerenciamentodeBiblioteca-java
-```
+A aplicação permite administrar:
 
-```
+- 📚 Livros
+- 👨‍🎓 Alunos
+- 🔄 Empréstimos
+- 👤 Usuários
+- 🔐 Autenticação e autorização
+
+Além das operações de CRUD, o sistema possui regras de negócio relacionadas a limite de empréstimos, disponibilidade de livros, devoluções, multas e desativação de registros.
+
+O projeto também foi utilizado como oportunidade para colocar em prática conceitos de arquitetura backend, segurança, persistência de dados, cache, containerização e deploy em nuvem.
+
+---
+
+🎯 Objetivos
+
+O projeto foi desenvolvido com foco no aprendizado e aplicação prática de conceitos importantes do desenvolvimento backend com Java:
+
+- Desenvolvimento de APIs REST;
+- Programação Orientada a Objetos;
+- Spring Boot;
+- Spring Security;
+- Autenticação utilizando JWT;
+- Spring Data JPA;
+- Hibernate;
+- Banco de dados relacional;
+- Cache com Redis;
+- Documentação de APIs;
+- Docker e Docker Compose;
+- Proxy reverso com Nginx;
+- Deploy em ambiente AWS;
+- Desenvolvimento e testes de endpoints.
+
+---
+
+🛠️ Tecnologias
+
+<p align="center"><img src="https://img.shields.io/badge/Java%2017-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/><img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/><img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"/><img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/><img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"/><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/><img src="https://img.shields.io/badge/AWS%20EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"/><img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black"/></p>Stack principal
+
+Tecnologia| Utilização
+Java 17| Desenvolvimento da aplicação
+Spring Boot| Construção da API REST
+Spring Security| Autenticação e segurança
+Spring Data JPA| Persistência e acesso aos dados
+Hibernate| ORM
+MySQL| Banco de dados relacional
+Redis| Cache
+Swagger/OpenAPI| Documentação e testes da API
+Docker| Containerização
+Docker Compose| Orquestração dos containers
+Nginx| Proxy reverso
+Amazon EC2| Hospedagem da aplicação
+Postman| Testes e desenvolvimento da API
+
+As tecnologias acima estão descritas no próprio repositório do projeto.
+
+---
+
+🏗️ Arquitetura
+
+A aplicação foi desenvolvida seguindo uma organização em camadas, buscando separar as responsabilidades da aplicação.
+
+                    ┌──────────────────────┐
+                    │       Cliente        │
+                    │ Postman / Front-end  │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │       Nginx          │
+                    │   Proxy Reverso      │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │    Spring Boot       │
+                    │                      │
+                    │     Controllers      │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │      Services        │
+                    │   Regras de negócio  │
+                    └──────────┬───────────┘
+                               │
+                    ┌──────────┴───────────┐
+                    │                      │
+                    ▼                      ▼
+             ┌─────────────┐       ┌─────────────┐
+             │    Redis    │       │    JPA /    │
+             │    Cache    │       │  Hibernate  │
+             └─────────────┘       └──────┬──────┘
+                                          │
+                                          ▼
+                                   ┌─────────────┐
+                                   │    MySQL    │
+                                   └─────────────┘
+
+---
+
+🔐 Segurança
+
+A API utiliza Spring Security para controle de acesso e autenticação.
+
+O fluxo de autenticação utiliza uma abordagem stateless, na qual o cliente recebe um token após realizar o login e utiliza esse token para acessar recursos protegidos.
+
+Login
+
+POST /login
+
+O endpoint verifica as credenciais do usuário e retorna o token de autenticação.
+
+---
+
+📚 Funcionalidades
+
+📖 Livros
+
+A API permite realizar operações de gerenciamento dos livros:
+
+GET    /livros
+GET    /livros/{isbn}
+POST   /livros
+PUT    /livros/{isbn}
+DELETE /livros/{isbn}
+
+O "DELETE" realiza a desativação do registro em vez de simplesmente remover o livro da base.
+
+---
+
+👨‍🎓 Alunos
+
+Gerenciamento dos alunos cadastrados:
+
+GET    /alunos
+GET    /alunos/{cpf}
+POST   /alunos
+PUT    /alunos/{cpf}
+DELETE /alunos/{cpf}
+
+Regras de negócio
+
+No cadastro do aluno são exigidos dados como:
+
+- Nome completo;
+- E-mail;
+- Telefone.
+
+Também é definido um limite de empréstimos para o aluno.
+
+Na atualização, determinados dados cadastrais podem ser alterados, enquanto a exclusão é tratada como desativação do perfil.
+
+---
+
+🔄 Empréstimos
+
+Gerenciamento do ciclo de empréstimos:
+
+GET    /emprestimos
+GET    /emprestimos/{id}
+POST   /emprestimos
+PUT    /emprestimos/{id}
+DELETE /emprestimos/{id}
+
+Durante um empréstimo:
+
+1. O limite de empréstimos do aluno é atualizado;
+2. O livro passa a ficar indisponível;
+3. A data de devolução é controlada;
+4. A devolução atualiza a disponibilidade do livro;
+5. Em caso de atraso, pode ser registrada uma multa.
+
+Quando o aluno atinge seu limite de empréstimos, novos empréstimos ficam bloqueados até que um item seja devolvido.
+
+Também existe uma regra relacionada ao acúmulo de multas: quando o saldo atinge determinado limite, novos empréstimos ficam bloqueados até a regularização.
+
+---
+
+👤 Usuários
+
+A API também possui gerenciamento de usuários:
+
+GET    /usuarios
+GET    /usuarios/{id}
+POST   /usuarios
+PUT    /usuarios/{id}
+DELETE /usuarios/{id}
+
+O cadastro e a autenticação dos usuários estão integrados ao mecanismo de segurança da aplicação.
+
+---
+
+📖 Documentação da API
+
+O projeto utiliza Swagger/OpenAPI para documentação e testes interativos dos endpoints.
+
+Após iniciar a aplicação localmente, acesse:
+
+http://localhost:8080/swagger-ui/index.html
+
+A interface permite visualizar os endpoints disponíveis, parâmetros, requisições e respostas da API.
+
+---
+
+🐳 Executando com Docker
+
+Uma das formas de executar o projeto é utilizando Docker Compose.
+
+Pré-requisitos
+
+- Docker
+- Docker Compose
+- Postman ou outra ferramenta para testes de API
+
+Clone o projeto:
+
+git clone https://github.com/eliascastrosousa/SistemadeGerenciamentodeBiblioteca-java.git
+
+Entre no diretório da aplicação:
+
 cd SistemadeGerenciamentodeBiblioteca-java/sgb/sgb/
-```
 
-```
+Suba os containers:
+
 docker compose up --build
-```
 
-Para rodar direto na maquina
-
-* Ter o Java17 instalado na maquina
-* IDE para compilar e executar o projeto.
-* Ter o MySQL instalado
-* Ferramenta de testes de API. ex: Insomnia e Postman;
-
-Instalar todas as dependencias do Maven
-
-![image](https://github.com/user-attachments/assets/230a8b17-7166-4b91-96e1-ba88ee574eba)
-
-Executar aplicação
-
-![image](https://github.com/user-attachments/assets/493b44e7-70e4-4cdc-ade7-45db765049c3)
-
-
-
-## Regras de negócio
-
-**Alunos:**
-- Requisitos para registro de alunos como obrigatoriedade de nome completo, email e telefone.
-- Ao gerar o cadastro do aluno, é incluido um limite de livros que podem ser emprestados.
-- Ao atualizar o aluno só podem ser atualizados nome e telefone e endereço.
-- Ao deletar o aluno da base de dados, o aluno é arquivado no sistema desativando seu perfil.
-  
-**Empréstimos:**
-- Regras sobre o tempo de empréstimo de livros e penalidades por atraso como multa.
-- Ao emprestar o livro, automaticamente é decrescido um limite de emprestimos do aluno e o livro é alterado para indisponivel na base de dados.
-- Quando o aluno utiliza todo seu limite de emprestimos, fica impossibilitado de realizar novos emprestimos até a devolução de um item.
-- Caso o item seja devolvido depois da data de devolução, é incluido em seu perfil uma multa, que quando chega a um limite de valor, o mesmo fica impedido de realizar novos emprestimos até realizar o pagamento do saldo da conta.
+As instruções de execução com Docker estão disponíveis no repositório.
 
 ---
 
-## Tecnologias
-As tecnologias utilizadas neste projeto incluem:
-- **Java 17:** Linguagem de programação usada para o desenvolvimento da API.
-- **Spring Boot:** Framework utilizado para construir a API REST.
-- **Spring Security:** Framework utilizado para controle de acesso e autenticação do usuário, utilizando o protocolo de comunicação STATELESS.
-- **Spring Data JPA e Hibernate:** Ferramentas utilizadas para simplificar o acesso e manipulação de dados no banco de dados MySQL.
-- **MySQL:** Banco de dados relacional utilizado para armazenar os dados da aplicação.
-- **Redis:** Sistema de cache utilizado para melhorar o desempenho e a escalabilidade da aplicação.
-- **Proxy Nginx:** Servidor proxy reverso utilizado para gerenciar o tráfego e aumentar a segurança e desempenho da aplicação.
-- **Swagger:** Ferramenta utilizada para documentação e testes interativos da API.
-- **Docker:** Utilizado para conteinerizar a aplicação, facilitando o desenvolvimento, teste e implantação.
-- **Docker Compose:** Ferramenta utilizada para definir e gerenciar multi-containers Docker, simplificando a orquestração de diferentes serviços.
-- **Amazon EC2:** Plataforma de nuvem usada para hospedar a aplicação.
-- **Postman:** Ferramenta utilizada para testar e desenvolver APIs, permitindo a validação dos endpoints da API de forma rápida e eficiente.
+💻 Executando localmente
+
+Também é possível executar a aplicação diretamente na máquina.
+
+Pré-requisitos
+
+- Java 17
+- Maven
+- MySQL
+- IDE de desenvolvimento
+- Postman ou outra ferramenta para testes de API
+
+Após configurar o banco de dados e as dependências do projeto, execute a aplicação pela sua IDE ou através do Maven.
 
 ---
 
-## Arquitetura
+☁️ Deploy
 
-em construção
+O projeto também contempla uma estrutura de implantação utilizando:
+
+AWS EC2
+   │
+   ▼
+Nginx
+   │
+   ▼
+Spring Boot
+   │
+   ├──── Redis
+   │
+   └──── MySQL
+
+A utilização de Docker, Nginx e EC2 permite praticar não apenas o desenvolvimento da API, mas também conceitos relacionados à infraestrutura e disponibilização de aplicações backend.
 
 ---
 
-## Paradigmas
-Os paradigmas de programação adotados incluem:
-- **Programação Orientada a Objetos (POO):** Utilizada para organizar o código em torno de objetos e classes.
-- **Desenvolvimento Ágil:** Abordagem utilizada para o desenvolvimento iterativo e incremental do software.
+🧠 Principais conceitos aplicados
 
-## Endpoints
+Backend
 
-Para utilizar o Swagger UI no servidor local, acesse o link:
-```
-  localhost:8080/swagger-ui/index.html
-```
+- Java 17
+- Spring Boot
+- APIs REST
+- Spring Security
+- JWT
+- Spring Data JPA
+- Hibernate
+- DTOs
+- Regras de negócio
+- Tratamento de dados
 
-Livro
+Banco de dados
 
-- **GET /livros:** Retorna a lista de livros.
-- **GET /livros/{isbn}:** Retorna livro especifico.
-- **POST /livros:** Cria um novo livro.
-- **PUT /livros/{isbn}:** Atualiza um livro.
-- **DELETE /livros/{isbn}:** Deleta(inativa) um livro especifico.
+- MySQL
+- Modelagem relacional
+- Persistência com JPA/Hibernate
 
-Aluno
+Performance
 
-- **GET /alunos:** Retorna a lista de alunos.
-- **GET /alunos/{cpf}:** Retorna aluno especifico.
-- **POST /alunos:** Cria um novo aluno.
-- **PUT /alunos/{cpf}:** Atualiza um aluno.
-- **DELETE /alunos/{cpf}:** Deleta(inativa) um aluno especifico.
+- Redis
+- Cache
 
-Emprestimos
+Infraestrutura
 
-- **GET /emprestimos:** Retorna a lista de emprestimos.
-- **GET /emprestimos/{id}:** Retorna emprestimo especifico.
-- **POST /emprestimos:** Cria um novo emprestimo.
-- **PUT /emprestimos/{id}:** Atualiza um emprestimo.
-- **DELETE /emprestimos/{id}:** Deleta(inativa) um emprestimo especifico.
+- Docker
+- Docker Compose
+- Nginx
+- AWS EC2
 
-Login e Usuarios
+Desenvolvimento
 
-- **POST /login:** Verifica credenciais e Retorna o Token de autenticação.
-- **GET /usuarios:** Retorna lista de usuarios.
-- **GET /usuarios/{id}:** Retorna usuario especifico.
-- **POST /usuarios:** Cria um novo usuario.
-- **PUT /usuarios/{id}:** Atualiza um usuario.
-- **DELETE /usuarios/{id}:** Deleta(inativa) um usuario especifico.
+- Maven
+- Git
+- GitHub
+- Postman
+- Swagger/OpenAPI
+
+---
+
+📈 Possíveis evoluções
+
+Algumas funcionalidades que podem ser incorporadas ao projeto no futuro:
+
+- [ ] Melhorar a documentação da arquitetura
+- [ ] Expandir cobertura de testes automatizados
+- [ ] Implementar testes de integração
+- [ ] Melhorar observabilidade e logs
+- [ ] Adicionar métricas da aplicação
+- [ ] Implementar CI/CD
+- [ ] Evoluir o sistema de notificações de atrasos
+- [ ] Criar dashboard para acompanhamento da biblioteca
+- [ ] Implementar paginação nos endpoints
+- [ ] Melhorar o gerenciamento de cache
+
+---
+
+👨‍💻 Autor
+
+Elias Castro Sousa Jr.
+
+Analista de Sistemas | Java | Spring Boot | Oracle | SQL
+
+""GitHub" (https://img.shields.io/badge/GitHub-Elias%20Castro-181717?style=for-the-badge&logo=github)" (https://github.com/eliascastrosousa)
+
+---
+
+📄 Licença
+
+Este projeto está disponível para fins de estudo e desenvolvimento.
+
+---
+
+⭐ Gostou do projeto? Deixe uma estrela no repositório!
+
+"🔗 Acessar o projeto no GitHub" (https://github.com/eliascastrosousa/SistemadeGerenciamentodeBiblioteca-java)
